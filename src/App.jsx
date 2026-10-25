@@ -1,22 +1,15 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
 import { Routes, Route } from "react-router-dom";
 import Home from "./components/pages/Home";
 import Products from "./components/pages/Products";
-import Navbar from "./components/Navbar";
-
+import "./App.css";
 
 function App() {
-  return(
-    <>
-    <Home/>
-    <Products/>
-  
-    </>
-  ) 
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/products" element={<Products />} />
+    </Routes>
+  );
 }
 
 export default App;

@@ -111,6 +111,25 @@
   color: #0aa89e;
 }
 
+/* =========================
+   ACTIVE NAVIGATION LINK
+   ========================= */
+
+.navbar .nav-link.active {
+  color: #0aa89e;
+  position: relative;
+}
+
+.navbar .nav-link.active::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  bottom: 2px;
+  height: 2px;
+  background-color: #0aa89e;
+  border-radius: 2px;
+}
 
 /* =========================
    SEARCH
@@ -200,6 +219,52 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+
+/* =========================
+   ACCOUNT (PROFILE ICON + MENU)
+   ========================= */
+
+.account-dropdown {
+  position: relative;
+}
+
+.account-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.profile-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.account-menu {
+  min-width: 150px;
+  margin-top: 10px;
+  padding: 8px 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.account-menu .dropdown-item {
+  padding: 9px 16px;
+  font-size: 14px;
+  color: #172033;
+}
+
+.account-menu .dropdown-item:hover {
+  background-color: #e8f8f6;
+  color: #0aa89e;
 }
 
 
@@ -304,4 +369,28 @@
     font-size: 12px;
     padding: 0 10px;
   }
+}
+
+
+/* =========================================
+   USER GREETING
+========================================= */
+
+.user-greeting {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 12px;
+  color: #102a43;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.greeting-profile-icon {
+  width: 38px;
+  height: 38px;
+  display: block;
+  object-fit: cover;
+  border-radius: 50%;
 }

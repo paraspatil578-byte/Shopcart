@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import "./Product.css";
 
@@ -200,11 +201,17 @@ const CATEGORIES = [
   "Books",
 ];
 
-function Products() {
+// Converts "12,499" (or 12499) into the number 12499
+const toNumber = (value) =>
+  typeof value === "number" ? value : Number(String(value).replace(/,/g, ""));
+
+function Products({ userName, cart, dispatch }) {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [maxPrice, setMaxPrice] = useState(20000);
   const [selectedRating, setSelectedRating] = useState(0);
   const [availability, setAvailability] = useState("");
+  const [addedProductId, setAddedProductId] = useState(null);
+  const navigate = useNavigate();
 
   const handleCategoryChange = (category) => {
     setSelectedCategories((previous) =>
@@ -227,6 +234,30 @@ function Products() {
     setMaxPrice(20000);
     setSelectedRating(0);
     setAvailability("");
+  };
+
+  const addToCart = (event, product) => {
+    // Don't open the details page when the button is clicked
+    event.stopPropagation();
+
+    dispatch({
+      type: "ADD_ITEM",
+      payload: {
+        id: product.id,
+        name: product.name,
+        category: product.category,
+        image: product.image,
+        price: toNumber(product.price),
+        originalPrice: toNumber(product.originalPrice),
+      },
+    });
+
+    // Show "Added to Cart" for 2 seconds
+    setAddedProductId(product.id);
+
+    setTimeout(() => {
+      setAddedProductId(null);
+    }, 2000);
   };
 
   const handleImageError = (event, product) => {
@@ -254,7 +285,7 @@ function Products() {
 
   return (
     <>
-      <Navbar />
+      <Navbar userName={userName} cart={cart} />
 
       <main className="products-page">
         <section className="products-banner">
@@ -356,8 +387,15 @@ function Products() {
             <div className="products-grid">
               {filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (
-                  <div className="product-card" key={product.id}>
-                    <div className="product-image">
+                  <div
+                    className="product-card"
+                    key={product.id}
+                    title="Click for more info"
+                  >
+                    <div
+                      className="product-image"
+                      onClick={() => navigate(`/products/${product.id}`)}
+                    >
                       {product.discount && (
                         <span className="discount-badge">
                           -{product.discount}
@@ -368,9 +406,10 @@ function Products() {
                         type="button"
                         className="wishlist-button"
                         aria-label={`Add ${product.name} to wishlist`}
-                        onClick={() =>
-                          alert(`${product.name} wishlist feature coming soon!`)
-                        }
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          alert(`${product.name} wishlist feature coming soon!`);
+                        }}
                       >
                         ♡
                       </button>
@@ -383,7 +422,10 @@ function Products() {
                       />
                     </div>
 
-                    <div className="product-info">
+                    <div
+                      className="product-info"
+                      onClick={() => navigate(`/products/${product.id}`)}
+                    >
                       <small>{product.category}</small>
                       <h3>{product.name}</h3>
 
@@ -401,9 +443,13 @@ function Products() {
                         type="button"
                         className="add-cart-button"
                         disabled={!product.isAvailable}
-                        onClick={() => alert(`${product.name} added to cart!`)}
+                        onClick={(event) => addToCart(event, product)}
                       >
-                        {product.isAvailable ? "🛒 Add to Cart" : "Out of Stock"}
+                        {!product.isAvailable
+                          ? "Out of Stock"
+                          : addedProductId === product.id
+                          ? "✓ Added to Cart"
+                          : "🛒 Add to Cart"}
                       </button>
                     </div>
                   </div>

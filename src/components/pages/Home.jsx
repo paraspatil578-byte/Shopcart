@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../Navbar";
 import "./Home.css";
 
@@ -23,6 +24,13 @@ import airdopesImage from "../../assets/images/products/airdopes.png";
 import iphoneImage from "../../assets/images/products/iphone.png";
 import ferrariImage from "../../assets/images/products/ferrari.png";
 import lampImage from "../../assets/images/products/lamp.png";
+
+// Hero background (works with any extension: png, jpg, webp...)
+const heroImages = import.meta.glob("../../assets/images/hero-banner-3.*", {
+  eager: true,
+  import: "default",
+});
+const heroBanner = Object.values(heroImages)[0];
 
 const products = [
   {
@@ -99,13 +107,24 @@ const products = [
   },
 ];
 
-function Home() {
+function Home({ userName, cart }) {
   return (
     <>
-      <Navbar />
+      <Navbar userName={userName} cart={cart} />
 
       {/* Hero Section */}
-      <section className="hero-section">
+      <section
+        className="hero-section"
+        style={
+          heroBanner
+            ? {
+                backgroundImage: `url(${heroBanner})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }
+            : undefined
+        }
+      >
         <div className="hero-content">
           <h1>
             Good Choices.
@@ -120,8 +139,12 @@ function Home() {
           </p>
 
           <div className="hero-buttons">
-            <button className="shop-btn">Shop Now →</button>
-            <button className="deal-btn">Explore Deals</button>
+            <Link to="/products" className="shop-btn">
+              Shop Now →
+            </Link>
+            <Link to="/products" className="deal-btn">
+              Explore Deals
+            </Link>
           </div>
 
           {/* Hero Benefits */}
@@ -138,7 +161,7 @@ function Home() {
 
             <div className="benefit-item">
               <img src={deliveryIcon} alt="Fast and free delivery" />
-              <p>Fast & Free Delivery</p>
+              <p>Fast &amp; Free Delivery</p>
             </div>
           </div>
         </div>
@@ -148,7 +171,7 @@ function Home() {
       <section className="category-section">
         <div className="section-heading">
           <h2>Shop by Category</h2>
-          <a href="#">View All Categories →</a>
+          <Link to="/products">View All Categories →</Link>
         </div>
 
         <div className="category-list">
@@ -166,25 +189,25 @@ function Home() {
 
           <div className="category-card home-kitchen">
             <img src={homeImage} alt="Home & Kitchen" />
-            <h3>Home & Kitchen</h3>
+            <h3>Home &amp; Kitchen</h3>
             <p>950+ Products</p>
           </div>
 
           <div className="category-card beauty">
             <img src={beautyImage} alt="Beauty & Personal Care" />
-            <h3>Beauty & Personal Care</h3>
+            <h3>Beauty &amp; Personal Care</h3>
             <p>750+ Products</p>
           </div>
 
           <div className="category-card sports">
             <img src={fitnessImage} alt="Sports & Fitness" />
-            <h3>Sports & Fitness</h3>
+            <h3>Sports &amp; Fitness</h3>
             <p>600+ Products</p>
           </div>
 
           <div className="category-card books">
             <img src={booksImage} alt="Books & Stationery" />
-            <h3>Books & Stationery</h3>
+            <h3>Books &amp; Stationery</h3>
             <p>500+ Products</p>
           </div>
         </div>
@@ -211,9 +234,9 @@ function Home() {
             </p>
           </div>
 
-          <a href="/products" className="view-products">
+          <Link to="/products" className="view-products">
             View All Products <span>→</span>
-          </a>
+          </Link>
         </div>
 
         <div className="product-grid">
@@ -233,12 +256,14 @@ function Home() {
 
                 <h3>{product.name}</h3>
 
-                <div className="product-price">₹{product.price}</div>
+                <div className="product-price">
+                  ₹{product.price.toLocaleString("en-IN")}
+                </div>
 
                 <div className="product-actions">
                   <button className="buy-now-button">Buy Now</button>
 
-                  <button className="cart-button">
+                  <button className="cart-button" aria-label="Add to cart">
                     <img src={cartIcon} alt="Cart" />
                   </button>
                 </div>

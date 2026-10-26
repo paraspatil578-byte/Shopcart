@@ -1094,4 +1094,9 @@
   }
 }
 
+.shop-btn,
+.deal-btn {
+  text-decoration: none;
+  display: inline-block;
+} 
 

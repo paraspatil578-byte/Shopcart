@@ -8,7 +8,7 @@ import Cart from "./components/pages/Cart";
 import About from "./components/pages/About";
 import Contact from "./components/pages/Contact";
 import ProductDetails from "./components/pages/ProductDetails";
-import NotFound from "./components/pages/NotFound";
+import NotFound from "./components/pages/Notfound";
 import Footer from "./components/Footer";
 
 function cartReducer(state, action) {
